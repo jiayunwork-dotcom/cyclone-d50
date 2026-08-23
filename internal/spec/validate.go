@@ -81,7 +81,7 @@ func (s *Spec) Validate() error {
 	if len(errs.problems) == 0 {
 		return nil
 	}
-	return errs
+	return stringifyValidErr(errs)
 }
 
 // validatePSD 校验给料粒径分布：两个切片等长、非空、粒径为正、质量分数
