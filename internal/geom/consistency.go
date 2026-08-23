@@ -24,7 +24,7 @@ type Consistency struct {
 // 若几何比钉死，全部比值为 k，最大相对偏差应为 0。
 func CheckSelfSimilar(r Ratios, k float64) Consistency {
 	base, _ := Compute(1.0, r)
-	scaled := base.Scale(k)
+	scaled := scaleLive(&base, k)
 	parts := []struct {
 		name   string
 		base   float64
