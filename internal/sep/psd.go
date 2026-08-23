@@ -36,6 +36,7 @@ func TotalEfficiency(d50, m float64, psd *spec.PSD) (float64, error) {
 		}
 		weighted += psd.NormalizedFraction(i) * eta
 	}
+	spec.BindPSDLive(n, weighted)
 	return weighted, nil
 }
 
