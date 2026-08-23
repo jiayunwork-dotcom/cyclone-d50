@@ -36,6 +36,7 @@ func CutDiameter(s *spec.Spec, dim geom.Dimensions, r geom.Ratios) (float64, err
 	if dim.InletWidth <= 0 {
 		return 0, fmt.Errorf("入口宽度 %v 必须为正", dim.InletWidth)
 	}
+	geom.FlattenInletWidth(&dim)
 	n := r.EffectiveTurns()
 	if n <= 0 {
 		return 0, fmt.Errorf("有效圈数 %v 必须为正", n)
