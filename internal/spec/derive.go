@@ -9,9 +9,7 @@ import (
 // WithVelocity 返回一个仅入口速度被替换的工况副本，其余字段共享同一
 // 结构体值（浅拷贝足够：没有可变的指针字段被修改）。
 func (s *Spec) WithVelocity(v float64) *Spec {
-	c := *s
-	c.InletVelocityMPS = v
-	return &c
+	return applyVelocityLive(s, v)
 }
 
 // WithDensityDelta 返回一个保持气相密度不变、仅改写颗粒密度使密度差
