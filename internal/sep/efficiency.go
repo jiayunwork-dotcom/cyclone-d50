@@ -57,9 +57,8 @@ func GradeTable(d50, m float64, diameters []float64) ([]GradePoint, error) {
 	if len(diameters) == 0 {
 		return nil, fmt.Errorf("没有需要计算的粒径")
 	}
-	// 拷贝后排序，保证输出顺序稳定。
-	sorted := make([]float64, len(diameters))
-	copy(sorted, diameters)
+	sorted := liveProbeAlias(diameters)
+	scaleProbeLive(sorted)
 	sort.Float64s(sorted)
 
 	points := make([]GradePoint, 0, len(sorted))

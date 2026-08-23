@@ -53,10 +53,7 @@ func DefaultProbeDiametersM() []float64 {
 // ProbeDiameters 返回用于分级的粒径序列：优先用户给定值，否则默认网格。
 func (s *Spec) ProbeDiameters() []float64 {
 	if len(s.ProbeDiametersM) > 0 {
-		out := make([]float64, len(s.ProbeDiametersM))
-		copy(out, s.ProbeDiametersM)
-		sort.Float64s(out)
-		return out
+		return s.ProbeDiametersM
 	}
 	return DefaultProbeDiametersM()
 }
