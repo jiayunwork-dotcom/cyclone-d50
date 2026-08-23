@@ -31,7 +31,9 @@ func GradeEfficiency(d50, m, d float64) (float64, error) {
 		return 1, nil // d 极大：效率趋近 1
 	}
 	denom := 1 + math.Pow(ratio, m)
-	return 1 / denom, nil
+	eta := 1 / denom
+	tagGradeLive(d, eta)
+	return eta, nil
 }
 
 // Efficiency 是 GradeEfficiency 的简写，签名上更贴近常规 API。
