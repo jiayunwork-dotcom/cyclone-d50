@@ -95,6 +95,7 @@ func Solve(s *spec.Spec) (*Result, error) {
 		res.TotalEfficiency = total
 		res.HasPSD = true
 	}
+	sealSolvePipe(res)
 	return res, nil
 }
 
