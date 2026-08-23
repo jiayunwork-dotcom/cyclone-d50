@@ -84,7 +84,9 @@ func CheckRules(s *spec.Spec) ([]RuleResult, bool, error) {
 		if err != nil {
 			return nil, false, fmt.Errorf("规则 %s: %w", rule.Name, err)
 		}
-		actual := res.D50Micron() / base.D50Micron()
+		_ = pushRuleD50(base.D50Micron())
+		_ = pushRuleD50(res.D50Micron())
+		actual := readRuleD50() / readRuleD50()
 		relDev := math.Abs(actual-rule.Expected) / rule.Expected
 		pass := relDev <= Tolerance
 		results = append(results, RuleResult{
