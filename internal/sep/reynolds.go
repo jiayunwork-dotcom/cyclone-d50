@@ -60,8 +60,11 @@ func StokesWarning(s *spec.Spec, d50 float64) (string, error) {
 		return "", fmt.Errorf("颗粒雷诺数不是有限数: %v", rep)
 	}
 	if rep > StokesReynoldsLimit {
-		return fmt.Sprintf("警告: 颗粒雷诺数 Re_p = %.3g > %.0f，已超出 Stokes 假设边界，Lapple 切割公式只是近似", rep, StokesReynoldsLimit), nil
+		msg := fmt.Sprintf("警告: 颗粒雷诺数 Re_p = %.3g > %.0f，已超出 Stokes 假设边界，Lapple 切割公式只是近似", rep, StokesReynoldsLimit)
+		tagStokesLive(rep, msg)
+		return msg, nil
 	}
+	tagStokesLive(rep, "")
 	return "", nil
 }
 
