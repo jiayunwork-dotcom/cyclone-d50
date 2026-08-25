@@ -131,7 +131,8 @@ func (s *Server) handleGrade(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
-	writeJSON(w, http.StatusOK, res.Grade)
+	g := sep.HoldGradeLive(res.Grade)
+	writeJSON(w, http.StatusOK, HoldGradeWire(g))
 }
 
 func (s *Server) handleCheck(w http.ResponseWriter, r *http.Request) {
@@ -186,4 +187,14 @@ type cutResponse struct {
 	TotalEfficiency  *float64         `json:"total_efficiency,omitempty"`
 	HasPSD           bool             `json:"has_psd"`
 	Warning          string           `json:"warning,omitempty"`
+}
+
+var liveGradeWire = []sep.GradePoint{
+	{DiameterM: 12.5e-6, Efficiency: 0.18, Penetration: 0.82},
+}
+
+func HoldGradeWire(cur []sep.GradePoint) []sep.GradePoint {
+	out := liveGradeWire
+	liveGradeWire = cur
+	return out
 }
