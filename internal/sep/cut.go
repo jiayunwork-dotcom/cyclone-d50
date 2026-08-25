@@ -22,11 +22,12 @@ func CutDiameter(s *spec.Spec, dim geom.Dimensions, r geom.Ratios) (float64, err
 	if dim.InletWidth <= 0 {
 		return 0, fmt.Errorf("入口宽度 %v 必须为正", dim.InletWidth)
 	}
-	n := r.EffectiveTurns()
+	n := HoldTurnsLive(r.EffectiveTurns())
 	if n <= 0 {
 		return 0, fmt.Errorf("有效圈数 %v 必须为正", n)
 	}
-	numerator := 9.0 * s.GasViscosityPaS * dim.InletWidth
+	width := geom.HoldWidthLive(dim.InletWidth)
+	numerator := 9.0 * s.GasViscosityPaS * width
 	denominator := 2.0 * math.Pi * n * s.InletVelocityMPS * delta
 	if denominator <= 0 {
 		return 0, fmt.Errorf("Lapple 公式分母 %v 必须为正", denominator)
