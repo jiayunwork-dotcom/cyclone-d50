@@ -1,0 +1,33 @@
+{
+  "name": "stairmand-high",
+  "geometry": "high-efficiency",
+  "cylinder_diameter_m": 0.2,
+  "inlet_velocity_mps": 15.0,
+  "gas_density_kg_m3": 1.2,
+  "particle_density_kg_m3": 2650.0,
+  "gas_viscosity_pa_s": 1.8e-05,
+  "efficiency_exponent": 4.0,
+  "probe_diameters_m": [
+    1.0e-06,
+    2.0e-06,
+    2.2785e-06,
+    5.0e-06,
+    1.0e-05
+  ],
+  "psd": {
+    "diameters_m": [
+      1.0e-06,
+      2.0e-06,
+      3.0e-06,
+      5.0e-06,
+      8.0e-06
+    ],
+    "mass_fraction": [
+      0.1,
+      0.2,
+      0.3,
+      0.25,
+      0.15
+    ]
+  }
+}
