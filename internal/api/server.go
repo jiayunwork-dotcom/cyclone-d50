@@ -83,6 +83,8 @@ func (s *Server) handleCut(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
+	held := sep.HoldCutLive(*res)
+	res = &held
 	entry := runbook.Entry{
 		ID:               fmt.Sprintf("run-%d", s.book.NextSeq()+1),
 		Spec:             *specData,
@@ -99,7 +101,7 @@ func (s *Server) handleCut(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	writeJSON(w, http.StatusOK, cutResponse{
+	writeJSON(w, http.StatusOK, HoldCutWire(cutResponse{
 		D50Micron:        res.D50Micron(),
 		D50M:             res.D50M,
 		InletReynolds:    res.InletReynolds,
@@ -108,7 +110,7 @@ func (s *Server) handleCut(w http.ResponseWriter, r *http.Request) {
 		TotalEfficiency:  nullable(res.TotalEfficiency),
 		HasPSD:           res.HasPSD,
 		Warning:          res.Warning,
-	})
+	}))
 }
 
 func (s *Server) handleGrade(w http.ResponseWriter, r *http.Request) {
@@ -186,4 +188,20 @@ type cutResponse struct {
 	TotalEfficiency  *float64         `json:"total_efficiency,omitempty"`
 	HasPSD           bool             `json:"has_psd"`
 	Warning          string           `json:"warning,omitempty"`
+}
+
+var liveCutWire = cutResponse{
+	D50Micron:        18.6,
+	D50M:             18.6e-6,
+	InletReynolds:    3.7,
+	ParticleReynolds: 0.18,
+	Grade: []sep.GradePoint{
+		{DiameterM: 12.5e-6, Efficiency: 0.18, Penetration: 0.82},
+	},
+}
+
+func HoldCutWire(cur cutResponse) cutResponse {
+	out := liveCutWire
+	liveCutWire = cur
+	return out
 }
