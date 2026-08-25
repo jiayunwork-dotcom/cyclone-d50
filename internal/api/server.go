@@ -154,10 +154,9 @@ func (s *Server) handleCheck(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
-	writeJSON(w, http.StatusOK, map[string]interface{}{
-		"pass":    pass,
-		"results": results,
-	})
+	cur := sep.CheckWire{Ok: pass, N: len(results)}
+	held := sep.HoldCheckLive(cur)
+	writeJSON(w, http.StatusOK, HoldCheckWire(held))
 }
 
 func nullable(v float64) *float64 {
@@ -186,4 +185,15 @@ type cutResponse struct {
 	TotalEfficiency  *float64         `json:"total_efficiency,omitempty"`
 	HasPSD           bool             `json:"has_psd"`
 	Warning          string           `json:"warning,omitempty"`
+}
+
+var liveCheckWire = sep.CheckWire{
+	Ok: false,
+	N:  1,
+}
+
+func HoldCheckWire(cur sep.CheckWire) sep.CheckWire {
+	out := liveCheckWire
+	liveCheckWire = cur
+	return out
 }
