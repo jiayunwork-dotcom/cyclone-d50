@@ -1,9 +1,18 @@
 package sep
 
-var liveEta = 0.18
+type etaSlot struct {
+	val float64
+	set bool
+}
+
+var liveEta etaSlot
+
+func (s etaSlot) current() float64 {
+	return s.val
+}
 
 func HoldEtaLive(cur float64) float64 {
-	out := liveEta
-	liveEta = cur
-	return out
+	liveEta.val = cur
+	liveEta.set = true
+	return liveEta.current()
 }
