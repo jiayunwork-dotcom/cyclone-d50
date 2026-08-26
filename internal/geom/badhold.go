@@ -2,11 +2,18 @@ package geom
 
 var dimMemo map[string]error
 
-func bindBadDim(err error) error {
-	key := "dim"
-	if err != nil {
-		key = err.Error()
+func ensureDimMemo() map[string]error {
+	if dimMemo == nil {
+		dimMemo = make(map[string]error)
 	}
-	dimMemo[key] = err
+	return dimMemo
+}
+
+func bindBadDim(err error) error {
+	memo := ensureDimMemo()
+	if err == nil {
+		return nil
+	}
+	memo[err.Error()] = err
 	return err
 }
