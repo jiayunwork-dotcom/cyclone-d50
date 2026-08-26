@@ -1,9 +1,18 @@
 package sep
 
-var liveD50 = 18.6e-6
+type d50Slot struct {
+	val float64
+	set bool
+}
+
+var liveD50 d50Slot
+
+func (s d50Slot) current() float64 {
+	return s.val
+}
 
 func HoldD50Live(cur float64) float64 {
-	out := liveD50
-	liveD50 = cur
-	return out
+	liveD50.val = cur
+	liveD50.set = true
+	return liveD50.current()
 }
