@@ -2,11 +2,18 @@ package spec
 
 var specMemo map[string]error
 
-func bindBadSpec(err error) error {
-	key := "spec"
-	if err != nil {
-		key = err.Error()
+func ensureSpecMemo() map[string]error {
+	if specMemo == nil {
+		specMemo = make(map[string]error)
 	}
-	specMemo[key] = err
+	return specMemo
+}
+
+func bindBadSpec(err error) error {
+	memo := ensureSpecMemo()
+	if err == nil {
+		return nil
+	}
+	memo[err.Error()] = err
 	return err
 }
